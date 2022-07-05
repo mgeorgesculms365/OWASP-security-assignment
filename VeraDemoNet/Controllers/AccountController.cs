@@ -79,9 +79,11 @@ namespace VeraDemoNet.Controllers
                 return RedirectToAction("Feed", "Blab");
             }
 
-            /* START BAD CODE */
-            return Redirect(ReturnUrl);
-            /* END BAD CODE */
+            if(Url.IsLocalUrl(ReturnUrl)){
+                return Redirect(ReturnUrl);
+            }
+
+            return View();
         }
 
         [HttpPost, ActionName("Login")]
@@ -132,9 +134,12 @@ namespace VeraDemoNet.Controllers
                         return RedirectToAction("Feed", "Blab");
                     }
 
-                    /* START BAD CODE */
-                    return Redirect(ReturnUrl);
-                    /* END BAD CODE */
+                    if (Url.IsLocalUrl(ReturnUrl))
+                    {
+                        return Redirect(ReturnUrl);
+                    }
+
+                    return View();
                 }
             }
             catch (Exception ex)
