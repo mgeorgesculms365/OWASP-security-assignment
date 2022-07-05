@@ -167,6 +167,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Commands\IBlabberCommandcs.cs" />
     <Compile Include="Commands\IgnoreCommand.cs" />
+    <Compile Include="Commands\IListenCommand.cs" />
     <Compile Include="Commands\ListenCommand.cs" />
     <Compile Include="Commands\RemoveAccountCommand.cs" />
     <Compile Include="Controllers\AccountController.cs" />

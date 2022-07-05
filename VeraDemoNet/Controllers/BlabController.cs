@@ -304,10 +304,11 @@ namespace VeraDemoNet.Controllers
 
                     var commandType = Type.GetType("VeraDemoNet.Commands." + UpperCaseFirst(command) + "Command");
 
-                    /* START BAD CODE */
                     var cmdObj = (IBlabberCommand) Activator.CreateInstance(commandType, dbContext.Database.Connection, username);
-                    cmdObj.Execute(blabberUsername);
-                    /* END BAD CODE */
+                    if (cmdObj is IListenCommand)
+                    {
+                        cmdObj.Execute(blabberUsername);
+                    }
                 }
             }
             catch (Exception ex)

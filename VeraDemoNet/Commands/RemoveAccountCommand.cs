@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace VeraDemoNet.Commands
 {
-    public class RemoveAccountCommand : BlabberCommandBase,IBlabberCommand
+    public class RemoveAccountCommand : BlabberCommandBase, IBlabberCommand
     {
         public RemoveAccountCommand(DbConnection connect, string username) {
             this.connect = connect;

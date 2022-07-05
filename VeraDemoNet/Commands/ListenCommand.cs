@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace VeraDemoNet.Commands
 {
-    public class ListenCommand : BlabberCommandBase, IBlabberCommand
+    public class ListenCommand : BlabberCommandBase, IBlabberCommand, IListenCommand
     {
         private readonly string username;
 
