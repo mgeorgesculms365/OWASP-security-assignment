@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
@@ -46,7 +47,7 @@ namespace VeraDemoNet.Controllers
 
         private string Ping(string host)
         {
-            if (string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(host) || !CheckValidUrl(host))
             {
                 return "";
             }
@@ -54,10 +55,8 @@ namespace VeraDemoNet.Controllers
             var output = new StringBuilder();
             try
             {
-                // START BAD CODE
                 var fileName = "cmd.exe";
                 var arguments = "/c ping " + host;
-                // END BAD CODE
 
                 var proc = CreateStdOutProcess(fileName, arguments);
 
@@ -81,17 +80,15 @@ namespace VeraDemoNet.Controllers
         {
             var output = new StringBuilder();
 
-            if (string.IsNullOrEmpty(fortuneFile)) 
+            if (string.IsNullOrEmpty(fortuneFile) || !CheckValidFortuneFile(fortuneFile)) 
             {
                 fortuneFile = "funny.txt";
             }
 
             try
             {
-                // START BAD CODE
                 var fileName = "cmd.exe";
                 var arguments = "/c " + HostingEnvironment.MapPath("~/Resources/bin/fortune-go.exe") + " " + HostingEnvironment.MapPath("~/Resources/bin/" + fortuneFile);
-                // END BAD CODE
 
                 var proc = CreateStdOutProcess(fileName, arguments);
 
@@ -126,5 +123,9 @@ namespace VeraDemoNet.Controllers
             };
             return proc;
         }
+
+        private bool CheckValidUrl(string url) => Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute);
+
+        private bool CheckValidFortuneFile(string name) => new List<string> { "funny.txt", "offensive.txt" }.Contains(name);
     }
 }
