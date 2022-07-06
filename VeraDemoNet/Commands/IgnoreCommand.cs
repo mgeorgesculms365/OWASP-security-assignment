@@ -15,29 +15,29 @@ namespace VeraDemoNet.Commands
 
         public void Execute(string blabberUsername) {
             var sqlQuery = "DELETE FROM listeners WHERE blabber=@blabber AND listener=@username";
-            
+
             logger.Info(sqlQuery);
 
             var action = connect.CreateCommand();
             action.CommandText = sqlQuery;
-		    action.Parameters.Add(new SqlParameter{ParameterName = "@blabber", Value = blabberUsername});
-            action.Parameters.Add(new SqlParameter{ParameterName = "@username", Value = username});
+            action.Parameters.Add(new SqlParameter { ParameterName = "@blabber", Value = blabberUsername });
+            action.Parameters.Add(new SqlParameter { ParameterName = "@username", Value = username });
             action.ExecuteNonQuery();
-					
+
             sqlQuery = "SELECT blab_name FROM users WHERE username = '" + blabberUsername + "'";
-            
+
             var sqlStatement = connect.CreateCommand();
             sqlStatement.CommandText = sqlQuery;
             logger.Info(sqlQuery);
             var blabName = sqlStatement.ExecuteScalar();
-		
-            /* START BAD CODE */
-            var ignoringEvent = username + " is now ignoring " + blabberUsername + "(" + blabName + ")";
-            sqlQuery = "INSERT INTO users_history (blabber, event) VALUES (\"" + username + "\", \"" + ignoringEvent + "\")";
 
+            sqlQuery = "INSERT INTO users_history (blabber, event) VALUES (@username, @username + ' is now ignoring ' + @blabberUsername + '(' + @blabname + ')')";
             sqlStatement.CommandText = sqlQuery;
-
-            /* END BAD CODE */
+            sqlStatement.Parameters.AddRange(new[] {
+                new SqlParameter("username", username),
+                new SqlParameter("blabberUsername", blabberUsername),
+                new SqlParameter("blabname", blabName)
+                });
 
             logger.Info(sqlQuery);
             sqlStatement.ExecuteNonQuery();

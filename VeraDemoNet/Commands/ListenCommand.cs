@@ -43,15 +43,15 @@ namespace VeraDemoNet.Commands
                 }
             }
 
-            
-            /* START BAD CODE */
-            var listeningEvent = username + " started listening to " + blabberUsername + "(" + blabberName + ")";
-            var eventQuery = "INSERT INTO users_history (blabber, event) VALUES ('" + username + "', '" + listeningEvent + "')";
-
             using (var sqlStatement = connect.CreateCommand())
             {
-                logger.Info(eventQuery);
-                sqlStatement.CommandText = eventQuery;
+                var sqlQuery = "INSERT INTO users_history (blabber, event) VALUES (@username, @username + ' is now listening to ' + @blabberUsername)";
+                sqlStatement.CommandText = sqlQuery;
+                sqlStatement.Parameters.AddRange(new[] {
+                    new SqlParameter("username", username),
+                    new SqlParameter("blabberUsername", blabberUsername)
+                    });
+                logger.Info(sqlQuery);
                 sqlStatement.ExecuteNonQuery();
             }
 
